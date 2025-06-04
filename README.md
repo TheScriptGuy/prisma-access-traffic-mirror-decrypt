@@ -3,7 +3,7 @@
 
 ## Overview
 
-This Python script is designed to decrypt encrypted network capture files (`.pcap.enc` or `.pcapng.enc`) packaged within ZIP archives. It handles batch processing of directories containing multiple ZIP files or a single ZIP file. The script expects AES-GCM encryption for the capture files, with the necessary decryption key, nonce, and authentication tag provided in an accompanying JSON file. This JSON key material file can itself be plaintext or RSA-OAEP encrypted, in which case an appropriate RSA private key is required for its decryption.
+This Python script is designed to decrypt encrypted network capture files (`.pcap.enc` or `.pcapng.enc`) packaged within ZIP archives. It handles batch processing of directories containing multiple ZIP files or a single ZIP file. The script expects AES-GCM encryption for the capture files, with the necessary decryption key, nonce, and authentication tag provided in an accompanying JSON file.
 
 ## Features
 
@@ -44,7 +44,7 @@ This Python script is designed to decrypt encrypted network capture files (`.pca
 The script is run from the command line.
 
 ```bash
-python traffic-mirror-pcap-decrypt.py <private_key_path> <input_path> [options]
+python3 traffic-mirror-pcap-decrypt.py <private_key_path> <input_path> [options]
 ```
 
 ## Command-Line Arguments
@@ -56,8 +56,8 @@ python traffic-mirror-pcap-decrypt.py <private_key_path> <input_path> [options]
 |`--on-missing-files`|Optional. Batch mode behavior when required files for a decryption set (e.g., .json key material) are missing. Choices: prompt, skip_problematic, abort_all_on_problem. Default: prompt.|No|
 |`--debug`|Optional. Enable debug logging for more verbose output.|No|
 
-#Examples
-Decrypt a single ZIP file, output to the same directory:
+# Examples
+### Decrypt a single ZIP file, output to the same directory:
 
 ```bash
 $ python3 traffic-mirror-pcap-decrypt.py key.pem ../us-east4-ep-tm-group1-s0wc/us-east4-ep-tm-group1-s0wc-20250604_053500_101524.zip
@@ -70,7 +70,7 @@ $ python3 traffic-mirror-pcap-decrypt.py key.pem ../us-east4-ep-tm-group1-s0wc/u
 2025-06-04 15:50:00 - INFO - Script processing finished.
 ```
 
-# Decrypt all ZIP files in a directory, output to a specific directory:
+### Decrypt all ZIP files in a directory, output to a specific directory:
 
 ```bash
 $ python3 traffic-mirror-pcap-decrypt.py key.pem ../us-east4-ep-tm-group1-s0wc --output-dir tmp
@@ -109,9 +109,9 @@ $ python3 traffic-mirror-pcap-decrypt.py key.pem ../us-east4-ep-tm-group1-s0wc -
 2025-06-04 15:52:03 - INFO - Script processing finished.
 ```
 
-# Decrypt a directory of ZIPs, always skip sets with missing JSON files, with debug logging:
+### Decrypt a directory of ZIPs, always skip sets with missing JSON files, with debug logging:
 ```bash
-python traffic-mirror-pcap-decrypt.py pey.pem ../us-east4-ep-tm-group1-s0wc --on-missing-files skip_problematic --debug -o tmp
+$ python3 traffic-mirror-pcap-decrypt.py pey.pem ../us-east4-ep-tm-group1-s0wc --on-missing-files skip_problematic --debug -o tmp
 ```
 
 # Input Requirements
@@ -133,7 +133,7 @@ This file contains the AES-GCM encrypted network capture data.
 
 2. Key Material JSON File:
 
-Named to correspond with the encrypted file: BASENAME.pcap.json or BASENAME.pcapng.json.
+Named to correspond with the encrypted file: `BASENAME.pcap.json` or `BASENAME.pcapng.json`.
 This file must be a JSON object containing the following keys:
 * `"key"`: The AES encryption key, Base64 encoded.
 * `"nonce"`: The nonce (Initialization Vector for GCM), Base64 encoded.
